@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <div id="chat-box">
+        {% for message in messages %}
+            <p>
+                {{ message }}
+                {% if is_admin %}
+                    <form action="/delete/{{ loop.index0 }}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    </form>
+                {% endif %}
+            </p>
+        {% endfor %}
+    </div>
+    <form action="/send" method="post">
+        <input type="text" name="message" placeholder="Type your message...">
+        <button type="submit">Send</button>
+    </form>
+    
+    <!-- Yalnızca admin kullanıcısı giriş yaptıysa tüm mesajları sil düğmesini göster -->
+    {% if is_admin %}
+        <form action="{{ url_for('delete_all') }}" method="post">
+            <button type="submit" class="btn btn-danger">Tüm Mesajları Sil</button>
+        </form>
+    {% endif %}
+    
+    <a href="/logout">Logout</a>
+</body>
+</html>
